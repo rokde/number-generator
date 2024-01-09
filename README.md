@@ -18,8 +18,15 @@ composer require rokde/number-generator
 ## Usage
 
 ```php
-$laravelNumberGenerator = new \Rokde\LaravelNumberGenerator();
-echo $laravelNumberGenerator->echoPhrase('Hello, Robert Kummer!');
+$numberGenerator = new \Rokde\NumberGenerator();
+// set placeholders
+$numberGenerator->set('YYYY', 2024) // static values
+    ->set('index', fn () => str_pad('2', 4, '0', STR_PAD_LEFT)) // dynamic values
+    ->set('iban', new IbanValue('DE02120300000000202051', ' ')) // formatter value
+
+// rendering an invoice number
+echo $numberGenerator->render('INV-{YYYY}-{index}'); // INV-2024-0002
+echo $numberGenerator->render('IBAN: {iban}'); // IBAN: DE02 1203 0000 0000 2020 51
 ```
 
 ## Testing
